@@ -3,7 +3,7 @@ import Vuex from "vuex"
 import appModule from "./store/modules/app"
 import App from "./App.vue"
 import router from "./router"
-import { isPC } from "@/utils";
+import { isPC } from "@/utils"
 import {
   Button,
   Select,
@@ -42,9 +42,9 @@ import theme from 'muse-ui/lib/theme'
 
 import "muse-ui/lib/styles/base.less"
 import "muse-ui/lib/styles/theme.less"
-import "./global.less";
-import Helpers from 'muse-ui/lib/Helpers';
-Vue.use(Vuex);
+import "./global.less"
+import Helpers from 'muse-ui/lib/Helpers'
+Vue.use(Vuex)
 Vue.use(Button)
 Vue.use(Select)
 Vue.use(AppBar)
@@ -147,13 +147,12 @@ else {
 const selfTheme = localStorage.getItem('selfTheme') || defaultTheme
 
 theme.use(selfTheme)
-theme.use('selfDark')
 
 
 Vue.prototype.avatar = "http://nevergiveupt.top/index.jpg"
 Vue.prototype.filterDate = filters.filterDate //时间过滤方法
 Vue.prototype.theme = theme
-Vue.prototype.isPC = isPC;
+Vue.prototype.isPC = isPC
 
 
 Vue.config.productionTip = false
@@ -162,7 +161,7 @@ const store = new Vuex.Store({
   modules: {
     app: appModule, // 注册 app module
   },
-});
+})
 
 
 new Vue({

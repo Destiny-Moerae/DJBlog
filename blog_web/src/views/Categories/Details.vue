@@ -6,7 +6,7 @@
     <Header :light-index="3" background="transparent"></Header>
 
     <div class="content">
-      <mu-paper class="pc-box" :z-depth="5">
+      <mu-paper class="pc-box" :style="{ width: isPC ? '' : '100%' }" :z-depth="5">
         <div class="sub-title">分类-{{ this.$route.query.name }}</div>
         <mu-list v-for="item in cateInfo.list" :key="item._id">
 
@@ -18,8 +18,9 @@
           </mu-list-item>
 
         </mu-list>
-        <div class="pagination">
-          <mu-pagination raised circle :total="100" :current.sync="page" :pageSize.sync="pageSize"></mu-pagination>
+        <div v-if="cateInfo.totalCount > pageSize" class="pagination">
+          <mu-pagination raised circle :total="cateInfo.totalCount" :current.sync="page"
+            :pageSize.sync="pageSize"></mu-pagination>
         </div>
       </mu-paper>
     </div>
@@ -28,7 +29,7 @@
 <script>
 import Header from "@/components/Header"
 import { getList } from '@/api/articles.js'
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 export default {
   name: "categories",
   components: {
@@ -36,6 +37,7 @@ export default {
   },
   data () {
     return {
+      isPC: true,
       categories: [],
       categoriesDetailsBgImg: "http://nevergiveupt.top/category.jpg",
       page: 1,
@@ -48,6 +50,7 @@ export default {
   },
   created () {
     this.getCateInfo()
+    this.isPC = document.body.clientWidth > 990
   },
   mounted () { },
   methods: {
@@ -111,8 +114,13 @@ export default {
   }
 
   .sub-title {
-    font-size: 0.4rem;
+    font-size: 1.4rem;
+    font-weight: 1000;
     padding-left: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    height: 50px;
+    display: flex;
+    align-items: center;
   }
 
   .item {
@@ -134,4 +142,4 @@ export default {
     margin: 0.53333rem 0;
   }
 }
-</style> 
+</style>

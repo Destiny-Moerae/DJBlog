@@ -1,10 +1,10 @@
 <template>
   <div class="header">
-    <mu-appbar :color="background">
+    <mu-appbar :color="background" :width="isPC ? '100%' : '200%'">
       <!-- title -->
       <span style="cursor: pointer">{{ introInfo.nickName }}</span>
 
-      <mu-avatar slot="left" class="header-avatar" :size="50">
+      <mu-avatar slot="left" class="header-avatar" :size="50" v-if="isPC">
         <img src="https://pic3.zhimg.com/v2-ab5c6c7643d5bedeece7fccb5d7ec2a1_r.jpg" />
       </mu-avatar>
 
@@ -12,7 +12,7 @@
       <mu-button slot="right" v-for="(item, index) in menu" :key="item.name"
         :color="lightIndex === index ? '#00e676' : ''" flat @click="jumpTo(item)">
         <mu-icon size="16" :value="item.icon"></mu-icon>
-        {{ item.name }}
+        <div style="width:28px">{{ item.name }}</div>
       </mu-button>
 
       <!-- 主题切换 -->
@@ -188,7 +188,8 @@ export default {
       openLoginModal: false, // 打开登录弹框
       openRegisterModal: false, // 打开注册弹框 
 
-      me: ""
+      me: "",
+      isPC: true
     }
   },
 
@@ -217,6 +218,7 @@ export default {
   },
   created () {
     this.getHInfo()
+    this.isPC = document.body.clientWidth > 990
   },
   methods: {
     async getHInfo () {
@@ -251,8 +253,8 @@ export default {
     toggleSearchModal (bool) {
       this.openSearchModal = bool
     },
-    handleContainerClick(e){
-      console.log(e.target);
+    handleContainerClick (e) {
+      console.log(e.target)
     },
     scrollTop () {
       document.body.scrollIntoView({ block: "start", behavior: "smooth" })
@@ -270,12 +272,12 @@ export default {
     }
   },
   computed: {
-    isShowAction() {
+    isShowAction () {
       return !(
         !this.info.openSearch &&
         !this.info.register &&
         !this.info.login
-      );
+      )
     },
   },
 
@@ -283,6 +285,12 @@ export default {
 </script>
 
 <style scoped lang="less">
+@media screen and (max-width: 989px) {
+  .header {
+    overflow-x: scroll;
+  }
+}
+
 .header {
   position: fixed;
   z-index: 1501;
@@ -342,4 +350,4 @@ export default {
   bottom: 0.4rem;
   background: #595959;
 }
-</style> 
+</style>

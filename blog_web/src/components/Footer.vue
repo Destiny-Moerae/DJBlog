@@ -9,7 +9,7 @@
 
 <script>
 import { getHF } from '@/api/hf.js'
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -17,16 +17,16 @@ export default {
   computed: {
     ...mapState('app', ['footerFixed']),
   },
-  data() {
+  data () {
     return {
       copyright: ""
     }
   },
-  created() {
+  created () {
     this.getHInfo()
   },
   methods: {
-    async getHInfo() {
+    async getHInfo () {
       const res = await getHF()
       console.log(res)
       this.copyright = res.data.footer.copyright
@@ -38,7 +38,7 @@ export default {
 <style lang="less" scoped>
 .footer {
   text-align: center;
-  font-size: 0.3rem;
+  font-size: 1rem;
   margin: 30px 0;
   width: 100%;
 

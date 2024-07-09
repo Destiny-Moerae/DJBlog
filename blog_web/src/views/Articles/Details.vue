@@ -29,11 +29,11 @@
       </div>
     </div>
     <div class="content">
-      <div class="right">
+      <div class="right" v-if="isPC">
         <RightConfig></RightConfig>
       </div>
       <div class="left">
-        <div class="left-box" style="width:70%">
+        <div class="left-box" :style="{ width: isPC ? '70%' : '100%' }">
           <mu-card class="card">
             <mu-card-title :title="info.title" :sub-title="info.introduction"></mu-card-title>
             <mu-card-media>
@@ -46,7 +46,7 @@
               <mu-button class="cursor-default" flat color="error">评论{{ info.comment }}</mu-button>
               <mu-button class="cursor-default" flat color="primary">点赞（{{ info.like }}）</mu-button>
               <mu-button class="cursor-default" flat color="#9e9e9e">{{ timestampToDate(info.createTime * 1000)
-              }}</mu-button>
+                }}</mu-button>
             </mu-card-actions>
 
             <mavonEditor :ishljs="true" v-model="content" defaultOpen="preview" :toolbarsFlag="false" :subfield="false"
@@ -121,8 +121,9 @@ export default {
     PrevNext
   },
 
-  data() {
+  data () {
     return {
+      isPC: true,
       info: {
         _id: '',
         title: '',
@@ -186,23 +187,24 @@ export default {
       },
     }
   },
-  created() {
+  created () {
     this.getArticle()
+    this.isPC = document.body.clientWidth > 990
   },
-  mounted() {
+  mounted () {
     this.commentList = this.listToTree(this.commentList)
   },
   computed: {
-    min() {
+    min () {
       if (this.content) {
-        return Math.floor(this.info.content.length / 1000);
+        return Math.floor(this.info.content.length / 1000)
       }
-      return 0;
+      return 0
     },
   },
   methods: {
     timestampToDate,
-    async getArticle() {
+    async getArticle () {
       const res = await getArticle({ id: this.$route.params.id })
       // console.log("res", res)
       this.info = res.data
@@ -229,16 +231,16 @@ export default {
         this.toc = toc
       })
     },
-    scrollToPosition(id) {
+    scrollToPosition (id) {
       let position = $(id).offset()
       position.top -= 80
       $("html,body").animate({ scrollTop: position.top }, 1000)
     },
-    async comment() {
+    async comment () {
       // console.log("评论数据", data)
       this.commentSuccess = true // 评论成功
     },
-    listToTree(list) {
+    listToTree (list) {
       let info = list.reduce(
         (map, node) => ((map[node._id] = node), (node.children = []), map),
         {}
@@ -249,10 +251,10 @@ export default {
         return !node.targetReplayId
       })
     },
-    countWords(source) {
-      const MAX_WORDS = 10000;
-      const shortUnit = '字';
-      const longUnit = 'w字';
+    countWords (source) {
+      const MAX_WORDS = 10000
+      const shortUnit = '字'
+      const longUnit = 'w字'
       const effectiveSource = source
         .replace(/<!--[\s\S]*?-->/g, '') // 去除 HTML 注释
         .replace(/:::.*?\n([\s\S]*?):::/g, '$1') // 去除代码块
@@ -261,13 +263,13 @@ export default {
         .replace(/```[\s\S]*?```/g, '') // 去除代码片段
         .replace(/`[\s\S]*?`/g, '') // 去除行内代码
         .replace(/!\[[\s\S]*?\]\([\s\S]*?\)/g, '') // 去除图片
-        .replace(/\[[\s\S]*?\]\([\s\S]*?\)/g, ''); // 去除链接
-      const length = effectiveSource.replace(/[\r\n\s]+/g, '').length;
+        .replace(/\[[\s\S]*?\]\([\s\S]*?\)/g, '') // 去除链接
+      const length = effectiveSource.replace(/[\r\n\s]+/g, '').length
       if (length <= MAX_WORDS) {
-        return `${length}${shortUnit}`;
+        return `${length}${shortUnit}`
       } else {
-        const num = Math.floor(length / 10000) + length % 10000 / 10000;
-        return `约${num.toFixed(2)}${longUnit}`;
+        const num = Math.floor(length / 10000) + length % 10000 / 10000
+        return `约${num.toFixed(2)}${longUnit}`
       }
     }
   }
@@ -293,16 +295,16 @@ export default {
     padding: 0.2rem 0 0.2rem 0.2rem;
 
     .title {
-      font-size: 0.4rem;
+      font-size: 1.4rem;
       margin-bottom: 10px;
     }
 
     a {
       display: inline-block;
       color: #2196f3;
-      font-size: 0.32rem;
+      font-size: 1rem;
       cursor: pointer;
-      padding: 5px 0;
+      padding: 5px 5px;
 
       &:hover {
         color: #00e676;

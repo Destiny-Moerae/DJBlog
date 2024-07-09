@@ -8,8 +8,8 @@
     <div class="content">
       <div class="tags-wap tagcloud" :style="{ width: isPC ? '70%' : '100%' }">
         <a v-for="(item, index) in tags" :key="index">
-          <mu-chip v-if="item.articleNum > 0" class="tag" :color="item.color"
-            @click="goDetail(item)">{{ item.name }}({{ item.articleNum }})</mu-chip>
+          <mu-chip v-if="item.articleNum > 0" class="tag" :color="item.color" @click="goDetail(item)">{{ item.name }}({{
+            item.articleNum }})</mu-chip>
         </a>
       </div>
     </div>
@@ -19,30 +19,30 @@
 import Header from "@/components/Header"
 import { getTags } from "@/api/tags.js"
 import { randomColor } from '@/utils'
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 export default {
   name: 'tags',
   components: {
     Header,
   },
-  data() {
+  data () {
     return {
       tags: [
 
       ],
       tagsBgImg: "http://nevergiveupt.top/tags.jpg",
-    };
+    }
   },
   computed: {
     ...mapState('app', ['homeConfig']),
   },
-  mounted() {
+  mounted () {
   },
-  created() {
+  created () {
     this.getTagInfo()
   },
   methods: {
-    async getTagInfo() {
+    async getTagInfo () {
       const res = await getTags()
       this.TagInfo = res.data.list
       this.tags = this.TagInfo.map(item => {
@@ -66,13 +66,13 @@ export default {
         })
       })
     },
-    goDetail(item) {
+    goDetail (item) {
       this.$router.push({
         name: "tagsDetails",
         query: {
           name: item.name,
         }
-      });
+      })
     }
   }
 

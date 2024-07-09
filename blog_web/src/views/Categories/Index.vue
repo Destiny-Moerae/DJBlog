@@ -95,7 +95,7 @@
 </template>
 <script>
 import Header from "@/components/Header"
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 export default {
   name: "categories",
   components: {
@@ -165,7 +165,7 @@ export default {
 
 .wap-content {
   position: absolute;
-  top: 250px;
+  top: 70px;
   bottom: 0;
   overflow: auto;
   width: 100%;
@@ -347,4 +347,4 @@ export default {
     margin: 0 0 32px 0;
   }
 }
-</style> 
+</style>

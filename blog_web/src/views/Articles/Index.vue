@@ -7,17 +7,20 @@
       </div>
 
       <div class="left">
-        <mu-card @click="goDetails(item)" :style="{width:isPC?'80%':'90%'}" class="card" v-for="item in info.list" :key="item._id">
+        <mu-card @click="goDetails(item)" :style="{ width: isPC ? '80%' : '100%', marginLeft: isPC ? '100px' : '' }"
+          class="card" v-for="item in info.list" :key="item._id">
           <div class="cover">
             <img class="cover-img" v-lazy="item.cover" alt="">
           </div>
           <div class="card-box">
-            <div class="title">{{ item.tile }}</div>
+            <div class="title">{{ item.title }}</div>
             <mu-card-actions class="sub-title">
               <mu-button class="cursor-default" flat color="info">查看{{ item.views }}</mu-button>
               <mu-button class="cursor-default" flat color="error">评论{{ item.comment }}</mu-button>
               <mu-button class="cursor-default" flat color="primary">点赞{{ item.like }}</mu-button>
-              <mu-button class="cursor-default" flat color="#9e9e9e">{{ timestampToDate(item.createTime*1000) }}</mu-button>
+              <mu-button v-if="isPC" class="cursor-default" flat color="#9e9e9e">{{ timestampToDate(item.createTime *
+                1000)
+                }}</mu-button>
             </mu-card-actions>
             <mu-card-text class="text">{{ item.introduction }}</mu-card-text>
             <mu-card-actions>
@@ -36,14 +39,14 @@
     </div>
     <div v-if="info.totalCount > pageSize" class="pagination">
       <mu-pagination raised circle :total="info.totalCount" :current.sync="page" :pageSize.sync="pageSize"
-        :pageCount="5"></mu-pagination>
+        :pageCount="pageSize"></mu-pagination>
     </div>
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header";
-import RightConfig from "@/components/RightConfig.vue";
+import Header from "@/components/Header"
+import RightConfig from "@/components/RightConfig.vue"
 import { getList } from '@/api/articles'
 import { timestampToDate } from '@/utils'
 export default {
@@ -53,7 +56,7 @@ export default {
     RightConfig
   },
 
-  data() {
+  data () {
     return {
       page: 1,
       pageSize: 20,
@@ -110,22 +113,24 @@ export default {
         //   },
         // ],
       },
+      isPC: true
     }
   },
-  created() {
-    this.getList();
+  created () {
+    this.getList()
+    this.isPC = document.body.clientWidth > 990
   },
   methods: {
     timestampToDate,
-    goDetails(item) {
+    goDetails (item) {
       this.$router.push(`/articles/details/${item._id}`)
     },
-    async getList() {
+    async getList () {
       const res = await getList({
         page: this.page,
         pageSize: this.pageSize
-      });
-      this.info = res.data;
+      })
+      this.info = res.data
       // console.log('res', res)
       // console.log('info', this.info)
     }
@@ -141,7 +146,9 @@ export default {
     display: flex;
 
     .left {
-      flex: 9;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
 
       &.wap-left {
         .card {
@@ -150,9 +157,15 @@ export default {
         }
       }
 
+      @media screen and (max-width: 989px) {
+        .card {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
       .card {
         width: 80%;
-        float: left;
         margin: 2.82667rem auto 0;
         display: flex;
         flex-wrap: wrap;
@@ -171,7 +184,8 @@ export default {
 
         .title {
           padding: 0.42667rem 0.42667rem 0 0.42667rem;
-          font-size: 0.4rem;
+          font-size: 1.4rem;
+          font-weight: 1000;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
@@ -182,7 +196,7 @@ export default {
 
         .sub-title {
           display: flex;
-          flex-wrap: wrap;
+          // flex-wrap: wrap;
         }
 
         .text {
@@ -215,7 +229,8 @@ export default {
     }
 
     .right {
-      flex: 3;
+      width: 270px;
+      margin-left: 20px;
       display: flex;
       justify-content: center;
     }

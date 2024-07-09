@@ -1,18 +1,8 @@
 <template>
   <div>
-    <mu-dialog :fullscreen="!isPC" width="60%" :open.sync="openModel">
-      <mu-auto-complete 
-        action-icon="search" 
-        label-float :data="keywords" 
-        label="文章搜索" 
-        :max-search-results="20"
-        v-model="keyword" 
-        open-on-focus 
-        avatar 
-        full-width 
-        @change="handleSearch"
-        :action-click="handleSearch"
-      >
+    <mu-dialog width="90%" :open.sync="openModel">
+      <mu-auto-complete action-icon="search" label-float :data="keywords" label="文章搜索" :max-search-results="20"
+        v-model="keyword" open-on-focus avatar full-width @change="handleSearch" :action-click="handleSearch">
         <template slot-scope="scope">
           <mu-list-item-action>
             <mu-avatar color="primary">
@@ -55,15 +45,15 @@ export default {
   },
   computed: {
     openModel: {
-      get() {
-        return this.open;
+      get () {
+        return this.open
       },
-      set(val) {
-        this.$emit("update:open", val);
+      set (val) {
+        this.$emit("update:open", val)
       }
     }
   },
-  data() {
+  data () {
     return {
       list: [
         // {
@@ -95,29 +85,29 @@ export default {
       keywords: []
     }
   },
-  created() {
-    this.getTags();
+  created () {
+    this.getTags()
   },
-  mounted() {
+  mounted () {
   },
   methods: {
-    async getTags(){
+    async getTags () {
       const res = await getTags()
-      this.keywords = res.data.list.map(item => item.name);
+      this.keywords = res.data.list.map(item => item.name)
     },
-    async getList(query) {
-      const res = await getList(query);
-      this.list = res.data.list;
+    async getList (query) {
+      const res = await getList(query)
+      this.list = res.data.list
     },
-    handleSearch() {
-      if (!this.keyword) return;
+    handleSearch () {
+      if (!this.keyword) return
       if (!this.keywords.includes(this.keyword)) {
-        this.getList({ title: this.keyword });
+        this.getList({ title: this.keyword })
       } else {
-        this.getList({ tags: this.keyword });
+        this.getList({ tags: this.keyword })
       }
     },
-    goDetail(item) {
+    goDetail (item) {
       this.$router.push(`/articles/details/${item._id}`)
     }
   },
@@ -133,5 +123,4 @@ export default {
 .no-content {
   text-align: center;
 }
-
 </style>

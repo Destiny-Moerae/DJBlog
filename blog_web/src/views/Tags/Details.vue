@@ -5,9 +5,9 @@
   }">
     <Header :light-index="4" background="transparent"></Header>
     <div class="content">
-      <mu-paper class="pc-box" :z-depth="5">
+      <mu-paper class="pc-box" :style="{ width: isPC ? '' : '100%' }" :z-depth="5">
         <mu-list>
-          <div class="sub-title">标签-{{ this.$route.query.id }}</div>
+          <div class="sub-title">标签-{{ this.$route.query.name }}</div>
           <mu-list-item button v-for="item in list" :key="item._id" @click="goDetails(item)">
             <mu-list-item-title class="item">
               <span class="title">文章标题:{{ item.title }}</span>
@@ -16,7 +16,7 @@
           </mu-list-item>
 
         </mu-list>
-        <div class="pagination">
+        <div class="pagination" v-if="info.totalCount > pageSize">
           <mu-pagination raised circle :total="100" :current.sync="page" :pageSize.sync="pageSize"></mu-pagination>
         </div>
       </mu-paper>
@@ -27,7 +27,7 @@
 import Header from "@/components/Header"
 import { getList } from "@/api/articles.js"
 import { timestampToDate } from "@/utils"
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 export default {
   name: "tagsDetails",
   components: {
@@ -48,7 +48,7 @@ export default {
   created () {
     this.getArticleList()
   },
-  mounted () { 
+  mounted () {
   },
   methods: {
     timestampToDate,
@@ -59,9 +59,10 @@ export default {
         pageSize: this.pageSize
       })
       // console.log("res", res)
+      this.info = res.data
       this.list = res.data.list
     },
-    
+
     goDetails (item) {
       this.$router.push(`/articles/details/${item._id}`)
     },
@@ -104,8 +105,13 @@ export default {
   }
 
   .sub-title {
-    font-size: 0.4rem;
+    font-size: 1.4rem;
+    font-weight: 1000;
     padding-left: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    height: 50px;
+    display: flex;
+    align-items: center;
   }
 
   .item {
@@ -127,4 +133,4 @@ export default {
     margin: 0.53333rem 0;
   }
 }
-</style> 
+</style>
